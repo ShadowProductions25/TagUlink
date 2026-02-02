@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TagUlink - Woody Jones</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            --bg: #0f172a;
+            --panel: #111827;
+            --card: #1f2937;
+            --accent: #fbbf24;
+            --accent-dark: #f97316;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1e293b, #0f172a 55%);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 2.5rem 1.5rem 1.5rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 0.4rem;
+            font-size: clamp(2.1rem, 4vw, 3rem);
+        }
+
+        header p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        main {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .panel {
+            background: var(--panel);
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0f172a;
+            background: var(--accent);
+            padding: 0.55rem 1.1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 0.8rem;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-2px);
+            background: var(--accent-dark);
+        }
+
+        .profile {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+            background: var(--accent);
+            color: #0f172a;
+        }
+
+        .details-grid {
+            display: grid;
+            gap: 0.75rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+
+        .detail-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 0.75rem;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .detail-card h3 {
+            margin: 0 0 0.25rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+        }
+
+        .detail-card p {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+
+        input[type="number"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border-radius: 10px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            background: #0b1220;
+            color: var(--text);
+        }
+
+        .stat-display {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .banner {
+            margin-top: 0.5rem;
+            padding: 0.6rem 0.9rem;
+            border-radius: 12px;
+            background: rgba(251, 191, 36, 0.15);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fef9c3;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            padding-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Woody Jones</h1>
+        <p>Aussie tribute runner, missed on the field.</p>
+        <div class="banner">Australia tribute · Now living in Australia</div>
+    </header>
+
+    <main>
+        <section class="panel nav-links">
+            <a href="TagUlink.html">Back to Arena</a>
+            <a href="leaderboard.html">Leaderboard</a>
+        </section>
+
+        <section class="panel profile">
+            <div class="profile-header">
+                <div class="avatar">W</div>
+                <div>
+                    <h2>Player Profile</h2>
+                    <p class="stat-display">Age 15 · Update stats below to sync with the leaderboard.</p>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-card">
+                    <h3>Speed</h3>
+                    <p>Slow</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Height</h3>
+                    <p>Average</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Tag IQ</h3>
+                    <p>Low to non-existent</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Size</h3>
+                    <p>Medium-large</p>
+                </div>
+            </div>
+
+            <div>
+                <label for="count">Times Tagged</label>
+                <input id="count" type="number" min="0" value="0" />
+            </div>
+            <div>
+                <label for="lastTagged">Last Tagged (date & time)</label>
+                <input id="lastTagged" type="datetime-local" />
+            </div>
+            <p class="stat-display">Last tagged: <span id="lastTaggedDisplay">Not tagged yet</span></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>TagUlink keeps your crew organized.</p>
+    </footer>
+
+    <script>
+        const storageKey = "tagulink-player-data";
+        const playerId = "woody-jones";
+        const defaultData = { count: 0, lastTaggedAt: null };
+
+        const countInput = document.getElementById("count");
+        const lastTaggedInput = document.getElementById("lastTagged");
+        const lastTaggedDisplay = document.getElementById("lastTaggedDisplay");
+
+        const loadData = () => {
+            const stored = localStorage.getItem(storageKey);
+            if (!stored) {
+                return { ...defaultData };
+            }
+            try {
+                const parsed = JSON.parse(stored);
+                return parsed[playerId] ? { ...defaultData, ...parsed[playerId] } : { ...defaultData };
+            } catch (error) {
+                console.warn("Failed to parse stored data", error);
+                return { ...defaultData };
+            }
+        };
+
+        const saveData = (playerData) => {
+            const stored = localStorage.getItem(storageKey);
+            let parsed = {};
+            if (stored) {
+                try {
+                    parsed = JSON.parse(stored) || {};
+                } catch (error) {
+                    parsed = {};
+                }
+            }
+            parsed[playerId] = playerData;
+            localStorage.setItem(storageKey, JSON.stringify(parsed));
+        };
+
+        const updateDisplay = (data) => {
+            lastTaggedDisplay.textContent = data.lastTaggedAt
+                ? new Date(data.lastTaggedAt).toLocaleString()
+                : "Not tagged yet";
+        };
+
+        const setInputs = (data) => {
+            countInput.value = data.count ?? 0;
+            lastTaggedInput.value = data.lastTaggedAt
+                ? new Date(data.lastTaggedAt).toISOString().slice(0, 16)
+                : "";
+            updateDisplay(data);
+        };
+
+        const updateData = () => {
+            const updated = {
+                count: Number.parseInt(countInput.value, 10) || 0,
+                lastTaggedAt: lastTaggedInput.value ? new Date(lastTaggedInput.value).getTime() : null
+            };
+            saveData(updated);
+            updateDisplay(updated);
+        };
+
+        const initial = loadData();
+        setInputs(initial);
+
+        countInput.addEventListener("input", updateData);
+        lastTaggedInput.addEventListener("input", updateData);
+    </script>
+</body>
+
+</html>
