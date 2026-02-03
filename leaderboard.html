@@ -9,14 +9,14 @@
         :root {
             color-scheme: light;
             font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-            --bg: #0f172a;
+            --bg: #0b1220;
             --panel: #111827;
             --card: #1f2937;
-            --accent: #22d3ee;
-            --accent-dark: #0ea5e9;
+            --accent: #facc15;
+            --accent-dark: #f97316;
             --text: #f8fafc;
             --muted: #94a3b8;
-            --highlight: #fef08a;
+            --highlight: #fde68a;
         }
 
         * {
@@ -26,7 +26,7 @@
         body {
             margin: 0;
             min-height: 100vh;
-            background: radial-gradient(circle at top, #1e293b, #0f172a 55%);
+            background: radial-gradient(circle at top, #1f2937, #0b1220 55%);
             color: var(--text);
             display: flex;
             flex-direction: column;
@@ -143,16 +143,6 @@
             color: var(--muted);
         }
 
-        input[type="number"],
-        input[type="datetime-local"] {
-            width: 100%;
-            padding: 0.5rem 0.6rem;
-            border-radius: 8px;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            background: #0b1220;
-            color: var(--text);
-        }
-
         .note {
             color: var(--muted);
             margin: 0.75rem 0 0;
@@ -170,7 +160,7 @@
 <body>
     <header>
         <h1>Leaderboard</h1>
-        <p>Enter tag counts and the latest tagged times. The leaderboard updates instantly.</p>
+        <p>Stats are updated in <strong>data.js</strong>, then reflected here.</p>
     </header>
 
     <main>
@@ -196,18 +186,18 @@
         </section>
 
         <section class="panel">
-            <h2>Manual Inputs</h2>
+            <h2>Roster Stats</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Player</th>
                         <th>Times Tagged</th>
-                        <th>Last Tagged (date & time)</th>
+                        <th>Last Tagged</th>
                     </tr>
                 </thead>
-                <tbody id="inputRows"></tbody>
+                <tbody id="statRows"></tbody>
             </table>
-            <p class="note">Tip: Use this page for quick updates during the day.</p>
+            <p class="note">Edit the stats in <strong>data.js</strong> to update this page.</p>
         </section>
     </main>
 
@@ -215,73 +205,27 @@
         <p>TagUlink keeps your squad organized.</p>
     </footer>
 
+    <script src="data.js"></script>
     <script>
-        const storageKey = "tagulink-player-data";
-        const players = [
-            { id: "keiran-edwards", name: "Keiran Edwards", role: "Slow-medium" },
-            { id: "jacob-benbow", name: "Jacob Benbow", role: "Medium-fast" },
-            { id: "fin-francis", name: "Fin Francis", role: "Fast" },
-            { id: "george-mcvicar", name: "George Mcvicar", role: "Giraffe" },
-            { id: "griff-gittins", name: "Griff Gittins", role: "Slow" },
-            { id: "kieron-neary", name: "Kieron Neary", role: "Fast" },
-            { id: "jake-willcock", name: "Jake Willcock", role: "Medium-fast" },
-            { id: "aarush-thakur", name: "Aarush Thakur", role: "Insane IQ" },
-            { id: "woody-jones", name: "Woody Jones", role: "Aussie tribute" }
-        ];
+        const players = window.tagUlinkPlayers || [];
 
         const mostTaggedEl = document.getElementById("mostTagged");
         const leastTaggedEl = document.getElementById("leastTagged");
         const lastTaggedEl = document.getElementById("lastTagged");
-        const inputRows = document.getElementById("inputRows");
+        const statRows = document.getElementById("statRows");
 
-        const defaultData = players.reduce((acc, player) => {
-            acc[player.id] = {
-                count: 0,
-                lastTaggedAt: null
-            };
-            return acc;
-        }, {});
-
-        const loadData = () => {
-            const stored = localStorage.getItem(storageKey);
-            if (!stored) {
-                return { ...defaultData };
-            }
-            try {
-                const parsed = JSON.parse(stored);
-                return { ...defaultData, ...parsed };
-            } catch (error) {
-                console.warn("Failed to parse stored data", error);
-                return { ...defaultData };
-            }
-        };
-
-        const saveData = (data) => {
-            localStorage.setItem(storageKey, JSON.stringify(data));
-        };
-
-        let data = loadData();
-
-        const formatTimestamp = (timestamp) => {
-            if (!timestamp) return "Not tagged yet";
-            return new Date(timestamp).toLocaleString();
-        };
+        const formatLastTagged = (value) => value || "Not tagged yet";
 
         const updateLeaderboard = () => {
-            const entries = players.map((player) => ({
-                ...player,
-                count: data[player.id]?.count || 0,
-                lastTaggedAt: data[player.id]?.lastTaggedAt || null
-            }));
+            const counts = players.map((player) => player.count);
+            const highest = Math.max(...counts);
+            const lowest = Math.min(...counts);
 
-            const highest = Math.max(...entries.map((player) => player.count));
-            const lowest = Math.min(...entries.map((player) => player.count));
-
-            const mostTagged = entries.filter((player) => player.count === highest);
-            const leastTagged = entries.filter((player) => player.count === lowest);
-            const lastTagged = entries
-                .filter((player) => player.lastTaggedAt)
-                .sort((a, b) => b.lastTaggedAt - a.lastTaggedAt)[0];
+            const mostTagged = players.filter((player) => player.count === highest);
+            const leastTagged = players.filter((player) => player.count === lowest);
+            const lastTagged = players
+                .filter((player) => player.lastTagged)
+                .sort((a, b) => new Date(b.lastTagged) - new Date(a.lastTagged))[0];
 
             mostTaggedEl.textContent = mostTagged.length
                 ? mostTagged.map((player) => `${player.name} (${player.count})`).join(", ")
@@ -290,44 +234,22 @@
                 ? leastTagged.map((player) => `${player.name} (${player.count})`).join(", ")
                 : "-";
             lastTaggedEl.textContent = lastTagged
-                ? `${lastTagged.name} · ${formatTimestamp(lastTagged.lastTaggedAt)}`
+                ? `${lastTagged.name} · ${formatLastTagged(lastTagged.lastTagged)}`
                 : "No one yet";
         };
 
         const buildRows = () => {
-            inputRows.innerHTML = "";
+            statRows.innerHTML = "";
             players.forEach((player) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-          <td>${player.name} <span style="color: var(--muted);">(${player.role})</span></td>
-          <td><input type="number" min="0" data-id="${player.id}" data-field="count" value="${data[player.id]?.count || 0}" /></td>
-          <td><input type="datetime-local" data-id="${player.id}" data-field="lastTaggedAt" value="${data[player.id]?.lastTaggedAt ? new Date(data[player.id].lastTaggedAt).toISOString().slice(0, 16) : ""}" /></td>
+          <td>${player.name}</td>
+          <td>${player.count}</td>
+          <td>${formatLastTagged(player.lastTagged)}</td>
         `;
-                inputRows.appendChild(row);
+                statRows.appendChild(row);
             });
         };
-
-        inputRows.addEventListener("input", (event) => {
-            const target = event.target;
-            if (!target.dataset.id) return;
-            const playerId = target.dataset.id;
-            const field = target.dataset.field;
-
-            if (!data[playerId]) {
-                data[playerId] = { count: 0, lastTaggedAt: null };
-            }
-
-            if (field === "count") {
-                data[playerId].count = Number.parseInt(target.value, 10) || 0;
-            }
-
-            if (field === "lastTaggedAt") {
-                data[playerId].lastTaggedAt = target.value ? new Date(target.value).getTime() : null;
-            }
-
-            saveData(data);
-            updateLeaderboard();
-        });
 
         buildRows();
         updateLeaderboard();
